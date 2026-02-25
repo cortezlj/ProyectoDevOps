@@ -1,0 +1,26 @@
+.container {
+  background: white;
+  padding: 48px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+}
+
+
+.title {
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.select {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+}

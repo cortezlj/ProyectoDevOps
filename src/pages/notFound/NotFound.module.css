@@ -1,0 +1,13 @@
+.container {
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.link {
+  color: #2f6fa3;
+  font-weight: 500;
+}

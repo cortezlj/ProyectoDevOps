@@ -1,0 +1,88 @@
+.container {
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.createBtn {
+  background-color: #2f6fa3;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.flexSection {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.card {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  flex: 1;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.progressBar {
+  background: #f1f1f1;
+  border-radius: 4px;
+  height: 8px;
+  width: 100%;
+}
+
+.progress {
+  background: #2f6fa3;
+  height: 8px;
+  border-radius: 4px;
+}
+
+.consultoresList {
+  list-style: none;
+  padding: 0;
+}
+
+.status {
+  margin-left: 8px;
+}
+
+.alta {
+  color: red;
+  font-weight: bold;
+}
+
+.media {
+  color: orange;
+  font-weight: bold;
+}
+
+.baja {
+  color: green;
+  font-weight: bold;
+}
