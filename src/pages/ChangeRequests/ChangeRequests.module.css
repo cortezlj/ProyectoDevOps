@@ -1,4 +1,3 @@
-/* Contenedor principal */
 .container {
   padding: 20px;
   background: #f7f8fa;
@@ -9,7 +8,6 @@ h1 {
   margin-bottom: 15px;
 }
 
-/* Botón Nueva Solicitud */
 .newRequestBtn {
   background-color: #0052cc;
   color: white;
@@ -24,7 +22,7 @@ h1 {
   background-color: #003f99;
 }
 
-/* Tabla */
+
 .table {
   width: 100%;
   border-collapse: collapse;
