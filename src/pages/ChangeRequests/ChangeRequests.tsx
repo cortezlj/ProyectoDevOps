@@ -158,18 +158,15 @@ const ChangeRequests = () => {
               />
             </label>
 
-            <label>
-              Consultor Asignado
-              <select
-                value={formData.consultor}
-                onChange={(e) => setFormData({ ...formData, consultor: e.target.value })}
-              >
-                <option value="">--Seleccionar--</option>
-                <option value="Juan Pérez">Juan Pérez</option>
-                <option value="María López">María López</option>
-                <option value="Pedro García">Pedro García</option>
-              </select>
-            </label>
+<label>
+  Consultor Asignado
+  <input
+    type="text"
+    placeholder="Nombre del consultor"
+    value={formData.consultor}
+    onChange={(e) => setFormData({ ...formData, consultor: e.target.value })}
+  />
+</label>
 
             {/* Botones de estado */}
             <div className={styles.modalActions}>

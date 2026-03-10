@@ -11,7 +11,7 @@ const Navbar = () => {
 
   return (
     <header className={styles.navbar}>
-      <h2 className={styles.logo}>IPMCS</h2>
+      <h2 className={styles.logo}>IIPMCS</h2>
 
       <nav className={styles.actions}>
         <button onClick={handleLogout}>Cerrar sesión</button>
