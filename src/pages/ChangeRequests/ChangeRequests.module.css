@@ -43,7 +43,6 @@ h1 {
   font-weight: 600;
 }
 
-/* Botones tabla */
 
 .revisarBtn {
   background-color: #006644;
@@ -72,7 +71,6 @@ h1 {
   background-color: #992600;
 }
 
-/* Modal overlay */
 
 .modalOverlay {
   position: fixed;
@@ -86,14 +84,12 @@ h1 {
   align-items: center;
 }
 
-/* ===== MODAL MÁS GRANDE ===== */
-
 .modal {
   background: white;
   padding: 25px;
   border-radius: 8px;
 
-  width: 750px;       /* ← antes 400px */
+  width: 750px;
   max-width: 95%;
   max-height: 90%;
 
@@ -101,7 +97,6 @@ h1 {
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
-/* ===== FORMULARIO EN 2 COLUMNAS ===== */
 
 .form {
   display: grid;
@@ -109,7 +104,6 @@ h1 {
   gap: 16px;
 }
 
-/* labels */
 
 .modal label {
   display: flex;
@@ -117,7 +111,6 @@ h1 {
   font-weight: 500;
 }
 
-/* Inputs */
 
 .modal input,
 .modal textarea,
@@ -130,7 +123,6 @@ h1 {
   box-sizing: border-box;
 }
 
-/* Descripción y comentarios ocupan todo el ancho */
 
 .modal textarea {
   resize: vertical;
@@ -138,7 +130,6 @@ h1 {
   grid-column: span 2;
 }
 
-/* Botones del modal */
 
 .modalActions {
   grid-column: span 2;
@@ -151,7 +142,6 @@ h1 {
   flex-wrap: wrap;
 }
 
-/* Botones */
 
 .approveBtn {
   background-color: #006644;
@@ -218,7 +208,6 @@ h1 {
   background-color: #777;
 }
 
-/* ===== FORMULARIO DE PROYECTOS ===== */
 
 .selectRow {
   display: flex;
