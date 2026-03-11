@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./ChangeRequests.module.css";
+import { db } from "../../firebase";
+import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
 
 interface ChangeRequest {
-  id: string;
+  id?: string; // id de Firestore
   descripcion: string;
   proyecto: string;
   estado: string;
@@ -10,14 +12,8 @@ interface ChangeRequest {
   consultor?: string;
 }
 
-const initialRequests: ChangeRequest[] = [
-  { id: "#15", descripcion: "Actualización Reportes", proyecto: "ERP", estado: "Aprobado", consultor: "Juan Pérez" },
-  { id: "#22", descripcion: "Nuevo Flujo Compras", proyecto: "SCM", estado: "En Revisión", consultor: "María López" },
-  { id: "#30", descripcion: "Ajuste Useraries", proyecto: "HCM", estado: "Pendiente", consultor: "Pedro García" },
-];
-
 const ChangeRequests = () => {
-  const [requests, setRequests] = useState(initialRequests);
+  const [requests, setRequests] = useState<ChangeRequest[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState<ChangeRequest | null>(null);
   const [formData, setFormData] = useState({
@@ -28,12 +24,26 @@ const ChangeRequests = () => {
     consultor: "",
   });
 
+  useEffect(() => {
+    cargarRequests();
+  }, []);
+
+  // Cargar solicitudes desde Firestore
+  const cargarRequests = async () => {
+    const querySnapshot = await getDocs(collection(db, "changeRequests"));
+    const lista: ChangeRequest[] = [];
+    querySnapshot.forEach((docSnap) => {
+      lista.push({ id: docSnap.id, ...docSnap.data() } as ChangeRequest);
+    });
+    setRequests(lista);
+  };
+
   // Abrir modal para nueva solicitud o edición
   const openModal = (request?: ChangeRequest) => {
     if (request) {
       setSelectedRequest(request);
       setFormData({
-        id: request.id,
+        id: request.id || "",
         descripcion: request.descripcion,
         proyecto: request.proyecto,
         comentarios: request.comentarios || "",
@@ -47,34 +57,38 @@ const ChangeRequests = () => {
   };
 
   // Guardar cambios
-  const handleSave = (estado: string) => {
+  const handleSave = async (estado: string) => {
     if (!formData.id || !formData.proyecto || !formData.consultor) {
       alert("Debe completar ID, Proyecto y Consultor Asignado");
       return;
     }
 
-    if (selectedRequest) {
+    const nuevoData: ChangeRequest = { ...formData, estado };
+
+    // Excluir 'id' antes de enviar a Firestore
+    const { id, ...dataToSave } = nuevoData;
+
+    if (selectedRequest && selectedRequest.id) {
       // Actualizar solicitud existente
-      setRequests((prev) =>
-        prev.map((r) =>
-          r.id === selectedRequest.id ? { ...r, estado, ...formData } : r
-        )
-      );
+      const reqRef = doc(db, "changeRequests", selectedRequest.id);
+      await updateDoc(reqRef, dataToSave);
     } else {
       // Crear nueva solicitud
-      const newRequest: ChangeRequest = {
-        ...formData,
-        estado,
-      };
-      setRequests((prev) => [...prev, newRequest]);
+      await addDoc(collection(db, "changeRequests"), dataToSave);
     }
+
+    // Recargar datos y cerrar modal
+    await cargarRequests();
     setModalOpen(false);
+    setSelectedRequest(null);
+    setFormData({ id: "", descripcion: "", proyecto: "", comentarios: "", consultor: "" });
   };
 
   // Eliminar solicitud
-  const handleDelete = (id: string) => {
-    if (window.confirm("¿Desea eliminar esta solicitud?")) {
-      setRequests((prev) => prev.filter((r) => r.id !== id));
+  const handleDelete = async (id?: string) => {
+    if (id && window.confirm("¿Desea eliminar esta solicitud?")) {
+      await deleteDoc(doc(db, "changeRequests", id));
+      cargarRequests();
     }
   };
 
@@ -158,15 +172,15 @@ const ChangeRequests = () => {
               />
             </label>
 
-<label>
-  Consultor Asignado
-  <input
-    type="text"
-    placeholder="Nombre del consultor"
-    value={formData.consultor}
-    onChange={(e) => setFormData({ ...formData, consultor: e.target.value })}
-  />
-</label>
+            <label>
+              Consultor Asignado
+              <input
+                type="text"
+                placeholder="Nombre del consultor"
+                value={formData.consultor}
+                onChange={(e) => setFormData({ ...formData, consultor: e.target.value })}
+              />
+            </label>
 
             {/* Botones de estado */}
             <div className={styles.modalActions}>

@@ -12,6 +12,7 @@
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.2.1",
+    "firebase": "^12.10.0",
     "mongoose": "^9.2.4",
     "oracledb": "^6.10.0",
     "react": "^19.2.0",

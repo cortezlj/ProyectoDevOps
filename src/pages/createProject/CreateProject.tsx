@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Input from "@/components/atoms/Input/Input";
 import Button from "@/components/atoms/Button";
 import styles from "./CreateProject.module.css";
+
+import { db } from "../../firebase";
+import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
 
 const CreateProject = () => {
 
@@ -19,55 +22,70 @@ const CreateProject = () => {
   const [projects, setProjects] = useState<any[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
+  useEffect(() => {
+    loadProjects();
+  }, []);
+
+  const loadProjects = async () => {
+    const querySnapshot = await getDocs(collection(db, "projects"));
+    const projectList: any[] = [];
+
+    querySnapshot.forEach((doc) => {
+      projectList.push({
+        id: doc.id,
+        ...doc.data()
+      });
+    });
+
+    setProjects(projectList);
+  };
+
   const handleChange = (e: any) => {
-
     const { name, value } = e.target;
-
     setProject({
       ...project,
       [name]: value
     });
-
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (editingIndex !== null) {
+      // Obtener id del proyecto que se está editando
+      const projectId = projects[editingIndex].id;
+      const projectRef = doc(db, "projects", projectId);
 
+      // Actualizar en Firestore
+      await updateDoc(projectRef, project);
+
+      // Actualizar localmente la lista de proyectos
       const updatedProjects = [...projects];
-      updatedProjects[editingIndex] = project;
-
+      updatedProjects[editingIndex] = { id: projectId, ...project };
       setProjects(updatedProjects);
       setEditingIndex(null);
 
     } else {
-
-      setProjects([...projects, project]);
-
+      // Crear nuevo proyecto
+      await addDoc(collection(db, "projects"), project);
+      loadProjects();
     }
 
+    // Limpiar formulario
     setProject(emptyProject);
-
   };
 
   const editProject = (index: number) => {
-
     setProject(projects[index]);
     setEditingIndex(index);
-
   };
 
-  const deleteProject = (index: number) => {
-
-    const filtered = projects.filter((_, i) => i !== index);
-    setProjects(filtered);
-
+  const deleteProject = async (id: string) => {
+    await deleteDoc(doc(db, "projects", id));
+    loadProjects();
   };
 
   return (
-
     <section className={styles.container}>
 
       <h1 className={styles.title}>Gestión de Proyectos</h1>
@@ -110,46 +128,43 @@ const CreateProject = () => {
           value={project.technicalConsultants}
           onChange={handleChange}
         />
-        
-<div className={styles.selectRow}>
 
-  <select
-    name="module"
-    value={project.module}
-    onChange={handleChange}
-  >
-    <option value="">Seleccione módulo</option>
-    <option value="ERP">ERP</option>
-    <option value="SCM">SCM</option>
-    <option value="HCM">HCM</option>
-  </select>
+        <div className={styles.selectRow}>
+          <select
+            name="module"
+            value={project.module}
+            onChange={handleChange}
+          >
+            <option value="">Seleccione módulo</option>
+            <option value="ERP">ERP</option>
+            <option value="SCM">SCM</option>
+            <option value="HCM">HCM</option>
+          </select>
 
-  <select
-    name="country"
-    value={project.country}
-    onChange={handleChange}
-  >
-    <option value="">Seleccione país</option>
-    <option value="Costa Rica">Costa Rica</option>
-    <option value="México">México</option>
-    <option value="Colombia">Colombia</option>
-  </select>
+          <select
+            name="country"
+            value={project.country}
+            onChange={handleChange}
+          >
+            <option value="">Seleccione país</option>
+            <option value="Costa Rica">Costa Rica</option>
+            <option value="México">México</option>
+            <option value="Colombia">Colombia</option>
+          </select>
+        </div>
 
-</div>
-
-<div className={styles.buttonContainer}>
-  <Button
-    type="submit"
-    label={editingIndex !== null ? "Actualizar Proyecto" : "Guardar Proyecto"}
-  />
-</div>
+        <div className={styles.buttonContainer}>
+          <Button
+            type="submit"
+            label={editingIndex !== null ? "Actualizar Proyecto" : "Guardar Proyecto"}
+          />
+        </div>
 
       </form>
 
       <h2 className={styles.subtitle}>Proyectos creados</h2>
 
       <table className={styles.table}>
-
         <thead>
           <tr>
             <th>Proyecto</th>
@@ -164,11 +179,8 @@ const CreateProject = () => {
         </thead>
 
         <tbody>
-
           {projects.map((p, index) => (
-
-            <tr key={index}>
-
+            <tr key={p.id}>
               <td>{p.name}</td>
               <td>{p.description}</td>
               <td>{p.country}</td>
@@ -178,29 +190,21 @@ const CreateProject = () => {
               <td>{p.technicalConsultants}</td>
 
               <td>
-
-                <button onClick={() => editProject(index)}>
+                <button type="button" onClick={() => editProject(index)}>
                   Editar
                 </button>
 
-                <button onClick={() => deleteProject(index)}>
+                <button type="button" onClick={() => deleteProject(p.id)}>
                   Eliminar
                 </button>
-
               </td>
-
             </tr>
-
           ))}
-
         </tbody>
-
       </table>
 
     </section>
-
   );
-
 };
 
 export default CreateProject;
