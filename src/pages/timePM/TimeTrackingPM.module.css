@@ -8,30 +8,77 @@
   margin-bottom: 20px;
 }
 
-/* FORMULARIO REGISTRO */
+/* CARDS */
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
 
+/* FORMULARIO REGISTRO */
 .formRegistro {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 10px;
-  margin-bottom: 25px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.formGroup label {
+  font-weight: 500;
+  color: #333;
 }
 
 .input {
-  padding: 8px;
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 14px;
+}
+
+.textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+/* INFORMACIÓN DEL PROYECTO */
+.proyectoInfo {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 6px;
+  border-left: 4px solid #007bff;
+  margin: 15px 0;
+}
+
+.proyectoInfo h4 {
+  margin: 0 0 10px 0;
+  color: #007bff;
+}
+
+.proyectoInfo p {
+  margin: 5px 0;
+  font-size: 14px;
 }
 
 /* BOTON */
-
 .buttonContainer {
   display: flex;
   align-items: end;
+  margin-top: 10px;
 }
 
 /* FILTROS */
-
 .form {
   display: flex;
   gap: 10px;
@@ -39,31 +86,49 @@
 }
 
 .select {
-  padding: 8px;
+  padding: 10px;
   border-radius: 4px;
   border: 1px solid #ccc;
+  font-size: 14px;
 }
 
 /* TABLA */
-
 .table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 10px;
 }
 
 .table th {
   text-align: left;
   border-bottom: 2px solid #ddd;
-  padding: 10px;
+  padding: 12px;
+  background: #f8f9fa;
+  font-weight: 600;
 }
 
 .table td {
   border-bottom: 1px solid #eee;
-  padding: 10px;
+  padding: 12px;
+}
+
+/* PROGRESS BAR */
+.progressBar {
+  width: 100px;
+  height: 8px;
+  background: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  background: linear-gradient(90deg, #28a745, #20c997);
+  border-radius: 4px;
+  transition: width 0.3s ease;
 }
 
 /* BOTONES ACCIONES */
-
 .actions {
   display: flex;
   gap: 8px;

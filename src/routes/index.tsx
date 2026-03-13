@@ -2,10 +2,12 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import MainLayout from "../layout/MainLayout/MainLayout";
 import AuthLayout from "../layout/AuthLayout/AuthLayout";
 import PrivateRoute from "./PrivateRoute";
+import AdminRoute from "./AdminRoute";
 
 import LoginPage from "../pages/Login/LoginPage";
 import ForgotPassword from "../pages/forgotPassword/ForgotPass";
 import Home from "../pages/Home/Home";
+import ConsultantDashboard from "../pages/ConsultantDashboard/ConsultantDashboard";
 import CreateProject from "../pages/createProject/CreateProject";
 import TimeTrackingPM from "../pages/timePM/TimeTrackingPM";
 import NotFound from "../pages/notFound/NotFound";
@@ -41,15 +43,31 @@ export const router = createBrowserRouter([
         element: <MainLayout />,
         children: [
           {
-            path: "/home",
-            element: <Home />,
+            path: "/consultant-dashboard",
+            element: <ConsultantDashboard />,
           },
           {
-            path: "/create-project",
-            element: <CreateProject />,
+            path: "/time-tracking",
+            element: <TimeTrackingPM />,
           },
-          { path: "/time-tracking", element: <TimeTrackingPM /> },
-          { path: "/change-requests", element: <ChangeRequests /> },
+          // Rutas de admin
+          {
+            element: <AdminRoute />,
+            children: [
+              {
+                path: "/home",
+                element: <Home />,
+              },
+              {
+                path: "/create-project",
+                element: <CreateProject />,
+              },
+              {
+                path: "/change-requests",
+                element: <ChangeRequests />,
+              },
+            ],
+          },
         ],
       },
     ],
