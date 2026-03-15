@@ -1,5 +1,4 @@
-
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { db } from "../../../firebase";
@@ -22,18 +21,27 @@ const Login = () => {
       const querySnapshot = await getDocs(collection(db, "usuarios"));
 
       let loginCorrecto = false;
+      let userData: any = null;
 
       querySnapshot.forEach((doc) => {
         const data = doc.data();
 
         if (data.email === email && data.password === password) {
           loginCorrecto = true;
+          userData = data;
         }
       });
 
-      if (loginCorrecto) {
+      if (loginCorrecto && userData) {
         localStorage.setItem("isAuth", "true");
-        navigate("/home");
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("userRole", userData.admin ? "admin" : "consultor");
+        localStorage.setItem("userId", email); // Usar email como identificador único
+        localStorage.setItem("userName", userData.name || userData.nombre || email.split('@')[0]); // Usar name, nombre o parte del email
+
+        // Redirigir basado en el rol
+        const dashboardRoute = userData.admin ? "/home" : "/consultant-dashboard";
+        navigate(dashboardRoute);
       } else {
         alert("Usuario o contraseña incorrectos");
       }
